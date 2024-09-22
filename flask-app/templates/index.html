@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellite Image Segmentation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('https://t4.ftcdn.net/jpg/02/62/48/57/360_F_262485724_dcfodPll6yP7lwrgVHj0oYB9wpL4mZtG.jpg');
+            background-size: cover;
+            color: white;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+        .result-image {
+            margin-top: 20px;
+            border: 2px solid white;
+        }
+        .image-container {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Satellite Image Segmentation</h1>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload a satellite image (12-channel TIFF preferred):</label>
+                <input type="file" class="form-control-file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Predict Mask</button>
+        </form>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="row image-container">
+            {% if original_image_url %}
+            <div class="col-md-4 text-center">
+                <h2>Original Image</h2>
+                <img src="{{ original_image_url }}" class="result-image img-fluid" alt="Original Image">
+            </div>
+            {% endif %}
+
+            {% if predicted_mask_url %}
+            <div class="col-md-4 text-center">
+                <h2>Predicted Mask</h2>
+                <img src="{{ predicted_mask_url }}" class="result-image img-fluid" alt="Predicted Mask">
+            </div>
+            {% endif %}
+
+            {% if water_color_url %}
+            <div class="col-md-4 text-center">
+                <h2>Predicted Mask with Water Color Effect</h2>
+                <img src="{{ water_color_url }}" class="result-image img-fluid" alt="Water Color Mask">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
